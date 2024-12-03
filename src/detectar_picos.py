@@ -2,18 +2,25 @@ from pydub import AudioSegment
 from pydub.silence import detect_nonsilent
 import os
 
-def detectar_picos_audio(caminho_audio, min_duracao=500, limiar_silencio=-30):
+def detectar_picos_audio(caminho_audio, min_duracao=1000, limiar_silencio=-20, duracao_minima_short=3000):
     """
-        Detecta os trechos não silenciosos no áudio.
-        - caminho_audio: Caminho do arquivo MP3.
-        - min_duracao: Duração mínima de um trecho não silencioso (em ms).
-        - limiar_silencio: Volume mínimo considerado como "som" (em dBFS).
+    Detecta os trechos não silenciosos no áudio com filtros refinados.
+    - min_duracao: Duração mínima de um trecho não silencioso (em ms).
+    - limiar_silencio: Volume mínimo considerado como "som" (em dBFS).
+    - duracao_minima_short: Duração mínima dos trechos relevantes para Shorts (em ms).
 
-        Retorna: Lista de intervalos [(inicio, fim), ...] em milissegundos.
+    Retorna: Lista de intervalos [(inicio, fim), ...] em milissegundos.
     """
+    # Carrega o áudio
     audio = AudioSegment.from_mp3(caminho_audio)
+
+    # Detecta trechos não silenciosos
     picos = detect_nonsilent(audio, min_silence_len=min_duracao, silence_thresh=limiar_silencio)
-    return picos
+
+    # Filtra trechos pela duração mínima para Shorts
+    picos_filtrados = [(inicio, fim) for inicio, fim in picos if (fim - inicio) >= duracao_minima_short]
+
+    return picos_filtrados
 
 def cortar_trechos_video(video_path, momentos, output_folder='shorts'):
     """
