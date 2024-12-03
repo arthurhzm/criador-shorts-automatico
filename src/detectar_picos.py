@@ -18,7 +18,11 @@ def detectar_picos_audio(caminho_audio, min_duracao=1000, limiar_silencio=-20, d
     picos = detect_nonsilent(audio, min_silence_len=min_duracao, silence_thresh=limiar_silencio)
 
     # Filtra trechos pela duração mínima para Shorts
-    picos_filtrados = [(inicio, fim) for inicio, fim in picos if (fim - inicio) >= duracao_minima_short]
+    picos_filtrados = []
+    for inicio, fim in picos:
+        if (fim - inicio) < duracao_minima_short:
+            fim = min(inicio + duracao_minima_short, len(audio))  # Expande, mas não ultrapassa o áudio
+        picos_filtrados.append((inicio, fim))
 
     return picos_filtrados
 
