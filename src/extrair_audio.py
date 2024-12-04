@@ -13,7 +13,7 @@ def extrair_audio(video_path, output_folder='audios'):
     return output_path
 
 def main():
-    video_path = 'videos/E se o YURI ALBERTO fosse para o REAL MADRID？ GANHARIA TUDO？.mp4'
+    video_path = 'videos/Descobri uma estratégia no Fortnite que mudou tudo... 😱.mp4'
     extrair_audio(video_path)
 
 if __name__ == '__main__':

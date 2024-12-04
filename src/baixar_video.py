@@ -15,7 +15,7 @@ def baixar_video(url, pasta='videos'):
         ydl.download([url])
 
 def main():
-    url = 'https://www.youtube.com/watch?v=3QNbk0TVDa8'
+    url = 'https://www.youtube.com/watch?v=b_EO3DSODHI' # AQUI VC COLOCA O LINK DO VIDEO
     baixar_video(url)
 
 if __name__ == '__main__':
